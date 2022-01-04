@@ -55,7 +55,8 @@ const getListFiles = async (req, res) => {
             fileInfos.push({
                 name: doc.filename,
                 url: baseUrl + doc.filename,
-                id: doc._id
+                id: doc._id,
+                contentType: doc.contentType
             });
         });   
         return res.status(200).send(fileInfos);
