@@ -3,13 +3,16 @@
     <v-app-bar fixed app>
       <v-btn :to="'/'">Home</v-btn>
       <!-- <v-btn @click="upload">Upload file</v-btn> -->
-      <v-btn @click="photo" :to = "'/photo'"> Upload</v-btn>
+      <v-btn @click="photo" :to="'/photo'"> Upload</v-btn>
+      <v-spacer></v-spacer>
+      <div v-if="Name">
+        <h4>hello, {{ Name }}</h4>
+      </div>
 
       <v-spacer></v-spacer>
       <v-btn @click="login">Login</v-btn>
       <v-btn @click="register">Sign Up</v-btn>
       <v-btn @click="logout"> Log Out</v-btn>
-
     </v-app-bar>
     <v-main>
       <v-container>
@@ -19,9 +22,7 @@
     </v-main>
   </v-app>
 </template>
-
 <script>
-import AuthenticationService from "../service/AuthenticationService";
 import store from "../store/store";
 import axios from "axios";
 
@@ -29,12 +30,14 @@ export default {
   name: "DefaultLayout",
   data() {
     return {
-      islogin: true,
+      isConnected: false,
       email: "",
+      url: process.env.VUE_APP_HOST,
       password: "",
       clipped: false,
       drawer: false,
       fixed: false,
+      Name: store.state.user,
       items: [
         {
           icon: "mdi-apps",
@@ -54,67 +57,47 @@ export default {
     };
   },
   methods: {
-    async logout() {
+     logout() {
       try {
-        // islogin = store.state.isUserLoggedIn
-        console.log("islogin: ", store.state.isUserLoggedIn);
-        console.log("response", store.state);
-        const test = JSON.parse(store.state.user);
-        const response = AuthenticationService.logout({
-          email: test.email,
-          password: test.password,
-        });
-        console.log("response", test.password);
-        store.dispatch("setisUserLoggedIn", false);
-        store.dispatch("setToken", "");
-        store.dispatch("setUser", "");
-
-        console.log("islogin: ", store.state.isUserLoggedIn);
-        alert("ban da dang xuat!!!!");
+        store.commit("setIsUserLoggedIn", this.isConnected);
         this.$router.push("/login");
+        window.localStorage.clear();
+        // location.reload();
+        alert("ban da dang xuat!!!!"); 
       } catch (error) {
         alert("Ban chua Dang nhap!!!!");
       }
     },
-    // async upload() {
-    //   console.log("token", store.state.token == "");
-    //   if (store.state.token !== "") {
-    //     this.$router.push("/upload");
-    //   } else {
-    //     this.$router.push("/login");
-    //   }
-    // },
-    async login() {
-      console.log("token", store.state.token == "");
-      if (store.state.token !== "") {
-        this.$router.push("/");
+     login() {
+      console.log("islogin: ", store.state.isUserLoggedIn);
+      if (store.state.isUserLoggedIn) {
+        this.$router.push("");
       } else {
         this.$router.push("/login");
       }
     },
-    async register() {
-      console.log("token", store.state.token == "");
-      if (store.state.token !== "") {
-        this.$router.push("/");
+     register() {
+      console.log("islogin: ", store.state.isUserLoggedIn);
+      if (store.state.isUserLoggedIn) {
+        this.$router.push("");
       } else {
         this.$router.push("/register");
       }
     },
-    async photo(){
-        await axios.get("http://localhost:8081/photos");
-        // const response = await AuthenticationService.photo({
-        //   email: this.email,
-        //   password: this.password,
-        // });
-        if (store.state.token !== "") {
+    async photo() {
+      console.log("islogin: ", store.state.isUserLoggedIn);
+      await axios.get("http://localhost:8081/photos");
+      if (store.state.isUserLoggedIn) {
         this.$router.push("/photo");
       } else {
         this.$router.push("/login");
       }
-    }
-
+    },
+  },
+  mounted: function () {
+    const user = store.state.user;
+    console.log("user", user);
   },
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

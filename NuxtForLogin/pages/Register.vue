@@ -58,7 +58,7 @@ export default {
           password: this.password,
         });
         console.log("response", response);
-        // this.$store.dispatch('setToken', response.data.token)
+         this.$router.push("/");
       } catch (error) {
         this.error = error.response.data.error;
       }

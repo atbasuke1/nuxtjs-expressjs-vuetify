@@ -21,6 +21,9 @@ export default {
   },
   update(credentials){
     return Api().post('update',credentials)
-  }
+  },
+  facebook(credentials){
+    return Api().get('auth/facebook',credentials)
+  },
   
 }
