@@ -1,18 +1,19 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
+import { setStore, getStore } from '../service/utils'
 
 Vue.use(Vuex)
-
+const user = getStore('user')
 export default new Vuex.Store({
-  strict: true,
   plugins: [
     createPersistedState()
   ],
   state: {
     token: null,
     user: null,
-    isUserLoggedIn: false
+    isUserLoggedIn: false,
+    loginUser: user
   },
   mutations: {
     setToken (state, token) {
@@ -21,8 +22,12 @@ export default new Vuex.Store({
     setUser (state, user) {
       state.user = user
     },
-    setisUserLoggedIn(state,isUserLoggedIn){
+    setIsUserLoggedIn (state, isUserLoggedIn) {
       state.isUserLoggedIn = isUserLoggedIn
+    },
+    setLoginUser(state, user) {
+      state.loginUser = user
+      setStore('user', user)
     }
   },
   actions: {
@@ -32,9 +37,9 @@ export default new Vuex.Store({
     setUser ({commit}, user) {
       commit('setUser', user)
     },
-    setisUserLoggedIn({commit},isUserLoggedIn){
-      commit('setisUserLoggedIn', isUserLoggedIn)
+    setIsUserLoggedIn ({commit}, isUserLoggedIn) {
+      commit('setUser', isUserLoggedIn)
     }
 
-  }
+    }
 })

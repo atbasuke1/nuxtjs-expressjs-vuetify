@@ -9,10 +9,20 @@ const UserSchema = new Schema({
     lowercase: true,
     unique: true,
   },
+  local: {
+    email: {
+      type: String,
+      lowercase: true
+    },
+    password: {
+      type: String
+    }
+  },
   password: {
     type: String,
     required: true,
   },
+  facebookid: String,
 })
 
 UserSchema.pre('save', async function (next) {

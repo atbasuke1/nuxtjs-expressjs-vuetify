@@ -102,7 +102,6 @@ export default {
   data() {
     return {
       photo: [],
-      listid: [],
       search: "",
       selected: [],
       file: "",
@@ -116,10 +115,12 @@ export default {
     };
   },
   methods: {
+
     paginateClickCallback: function (pageNum) {
       this.currentPage = Number(pageNum);
     },
-    async deleteSelect() {
+
+     deleteSelect() {
       console.log("deleteselect", this.selected);
       axios
         .delete("http://localhost:8081/many/" + this.selected)
@@ -131,6 +132,7 @@ export default {
           console.log(error);
         });
     },
+
     refreshData() {
       axios
         .get("http://localhost:8081/photos")
@@ -142,7 +144,8 @@ export default {
           console.log(error);
         });
     },
-    async deletePT(id) {
+
+     deletePT(id) {
       axios
         .delete("http://localhost:8081/photos/" + id)
         .then((response) => {
@@ -153,10 +156,12 @@ export default {
           console.log(error);
         });
     },
+
     selectFile(event) {
       this.progressInfos = [];
       this.selectedFiles = event.target.files;
     },
+
     upload(idx, file) {
       this.progressInfos[idx] = { percentage: 0, fileName: file.name };
       UploadService.upload(file, (event) => {
@@ -167,7 +172,6 @@ export default {
         .then((response) => {
           let prevMessage = this.message ? this.message + "\n" : "";
           this.message = prevMessage + response.data.message;
-          // return UploadService.getFiles();
            this.refreshData();
         })
         .then((files) => {
@@ -178,6 +182,7 @@ export default {
           this.message = "Could not upload the file:" + file.name;
         });
     },
+
     uploadFiles() {
       this.message = "";
       for (let i = 0; i < this.selectedFiles.length; i++) {
@@ -207,10 +212,12 @@ input[type="file"] {
   border: 1px dotted #b3adad;
   height: 32px
 }
+
 .btn-danger {
   color: rgb(252, 252, 252);
   background-color: rgb(240, 107, 107) !important;
 }
+
 .btnsm {
   margin-left: 15px;
   border: black;
@@ -218,11 +225,13 @@ input[type="file"] {
   height: 35px;
   width: 80px;
 }
+
 .file {
   margin-top: 10px;
   display: flex;
   justify-content: center;
 }
+
 form {
   box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%),
     0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
@@ -232,6 +241,7 @@ form {
   align-items: center;
   display: flex;
 }
+
 ul {
   box-shadow: 0px 1px 1px -2px rgb(0 0 0 / 20%),
     0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
