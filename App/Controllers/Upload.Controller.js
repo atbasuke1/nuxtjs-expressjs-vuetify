@@ -1,8 +1,6 @@
 const upload = require("../middleware/upload");
 const dbConfig = require("../config/db");
-const MongoClient = require("mongodb").MongoClient;
-const GridFSBucket = require("mongodb").GridFSBucket;
-const objectId = require('mongodb').ObjectID;
+const { MongoClient, GridFSBucket, ObjectID } = require('mongodb')
 const url = dbConfig.url;
 const baseUrl = "http://localhost:8081/photos/";
 const mongoClient = new MongoClient(url);
@@ -101,7 +99,7 @@ const deleteOne = async (req, res) => {
         console.log("Data deleted", req.params.id);
         await mongoClient.connect(() => {
             const image = mongoClient.db("Nuxt").collection("photos.files")
-            image.deleteOne({ _id: new objectId(id) }).then(function (err, docs) {
+            image.deleteOne({ _id: new ObjectID(id) }).then(function (err, docs) {
                 if (err) {
                     console.log(err)
                     res.send({ message: err })
@@ -128,7 +126,7 @@ const deleteMany = async (req, res) => {
     const images = mongoClient.db("Nuxt").collection("photos.files")
     try {
         await Promise.all(test.map(id => images.deleteOne({
-            _id: objectId(id)
+            _id: ObjectID(id)
         })))
         res.status(200).send({
             message: " deleted successfully."
