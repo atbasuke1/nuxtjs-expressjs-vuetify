@@ -25,13 +25,6 @@
                 Upload
               </button>
             </div>
-            <div v-if="message" class="alert alert-light" role="alert">
-              <ul>
-                <li v-for="(ms, i) in message.split('\n')" :key="i">
-                  {{ ms }}
-                </li>
-              </ul>
-            </div>
           </div>
         </form>
       </div>
@@ -179,7 +172,6 @@ export default {
         })
         .catch(() => {
           this.progressInfos[idx].percentage = 0;
-          this.message = "Could not upload the file:" + file.name;
         });
     },
 

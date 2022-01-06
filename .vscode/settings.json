@@ -1,6 +1,10 @@
 {
     "cSpell.words": [
         "axios",
-        "islogin"
+        "islogin",
+        "persistedstate",
+        "vuejs",
+        "vuetify",
+        "vuex"
     ]
 }

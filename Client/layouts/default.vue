@@ -5,10 +5,9 @@
       <!-- <v-btn @click="upload">Upload file</v-btn> -->
       <v-btn @click="photo" :to="'/photo'"> Upload</v-btn>
       <v-spacer></v-spacer>
-      <div v-if="Name">
+       <div v-if="Name">
         <h4>hello, {{ Name }}</h4>
       </div>
-
       <v-spacer></v-spacer>
       <v-btn @click="login">Login</v-btn>
       <v-btn @click="register">Sign Up</v-btn>
@@ -16,7 +15,7 @@
     </v-app-bar>
     <v-main>
       <v-container>
-        <inspire />
+        <Nuxt/>
         <v-img src></v-img>
       </v-container>
     </v-main>
@@ -25,16 +24,13 @@
 <script>
 import store from "../store/store";
 import axios from "axios";
-import Inspire from '../pages/Inspire.vue';
 
 export default {
-  components: { Inspire },
   name: "DefaultLayout",
   data() {
     return {
       isConnected: false,
       email: "",
-      url: process.env.VUE_APP_HOST,
       password: "",
       clipped: false,
       drawer: false,
@@ -62,7 +58,7 @@ export default {
      logout() {
       try {
         store.commit("setIsUserLoggedIn", this.isConnected);
-        this.$router.push("/login");
+        this.$router.push({path:"/login"});
         window.localStorage.clear();
         // location.reload();
         alert("ban da dang xuat!!!!"); 
@@ -70,14 +66,17 @@ export default {
         alert("Ban chua Dang nhap!!!!");
       }
     },
+
      login() {
       console.log("islogin: ", store.state.isUserLoggedIn);
+      console.log("da click vao login");
       if (store.state.isUserLoggedIn) {
         this.$router.push("");
       } else {
-        this.$router.push("/login");
+        this.$router.push({path:"/login"});
       }
     },
+
      register() {
       console.log("islogin: ", store.state.isUserLoggedIn);
       if (store.state.isUserLoggedIn) {
@@ -86,6 +85,7 @@ export default {
         this.$router.push("/register");
       }
     },
+
     async photo() {
       console.log("islogin: ", store.state.isUserLoggedIn);
       await axios.get("http://localhost:8081/photos");
@@ -97,8 +97,7 @@ export default {
     },
   },
   mounted: function () {
-    const user = store.state.user;
-    console.log("user", user);
+
   },
 };
 </script>
