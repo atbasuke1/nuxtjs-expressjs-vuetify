@@ -38,7 +38,7 @@ export default new Vuex.Store({
       commit('setUser', user)
     },
     setIsUserLoggedIn ({commit}, isUserLoggedIn) {
-      commit('setUser', isUserLoggedIn)
+      commit('setIsUserLoggedIn', isUserLoggedIn)
     }
 
     }

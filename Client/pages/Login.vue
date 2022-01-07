@@ -78,10 +78,10 @@ export default {
         });
         store.dispatch("setToken", response.data.accessToken);
         store.dispatch("setUser", response.config.data);
-
-        store.dispatch("setisUserLoggedIn", true);
+        this.isConnected = true;
+        store.commit('setIsUserLoggedIn', this.isConnected)
+        console.log("islogin",this.isConnected)
         console.log("store.state: ", store.state);
-        console.log("response.token", store.state.token);
         this.$router.push("/photo");
       } catch (error) {
         alert("Khong the dang nhap!!!!");

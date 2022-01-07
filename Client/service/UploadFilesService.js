@@ -1,12 +1,11 @@
-import axios from "axios";
-
+import Api from "./api";
 class UploadFilesService {
   upload(file, onUploadProgress) {
     let formData = new FormData();
 
     formData.append("file", file);
 
-    return axios.post("http://localhost:8081/upload", formData, {
+    return Api().post("/upload", formData, {
       headers: {
         "Content-Type": "multipart/form-data"
       },
@@ -15,7 +14,7 @@ class UploadFilesService {
   }
 
   getFiles() {
-    return axios.get("http://localhost:8081/photos");
+    return Api().get("/photos");
   }
 }
 

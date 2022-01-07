@@ -46,7 +46,11 @@
       </v-row>
       <v-row v-for="item in getItems" :key="item.id">
         <v-col> </v-col>
-        <v-checkbox v-model="selected" :value="item.id" :key="item.id"></v-checkbox>
+        <v-checkbox
+          v-model="selected"
+          :value="item.id"
+          :key="item.id"
+        ></v-checkbox>
         <v-col>{{ item.name }}</v-col>
         <v-col><img v-bind:src="item.url" height="60px" /></v-col>
         <v-col>{{ item.contentType }}</v-col>
@@ -85,11 +89,12 @@
 </template>
 <script src="https://unpkg.com/vuejs-paginate@latest"></script>
 <script>
-import axios from "axios";
-import UploadService from "../service/UploadFilesService";
+import UploadService from "../service/uploadFilesService";
 import Vue from "vue";
 import VueJsPaginate from "vuejs-paginate";
+import api from '../service/api';
 Vue.component("vuejs-paginate", VueJsPaginate);
+
 export default {
   name: "Characters",
   data() {
@@ -108,18 +113,19 @@ export default {
     };
   },
   methods: {
-
     paginateClickCallback: function (pageNum) {
       this.currentPage = Number(pageNum);
     },
 
-     deleteSelect() {
+    deleteSelect() {
       console.log("deleteselect", this.selected);
-      axios
-        .delete("http://localhost:8081/many/" + this.selected)
+      console.log("Host: ");
+
+      api()
+        .delete("/many/" + this.selected)
         .then((response) => {
           this.refreshData();
-          console.log("delete",response.data);
+          console.log("delete", response.data);
         })
         .catch(function (error) {
           console.log(error);
@@ -127,8 +133,8 @@ export default {
     },
 
     refreshData() {
-      axios
-        .get("http://localhost:8081/photos")
+      api()
+        .get("/photos")
         .then((response) => {
           this.photo = response.data.reverse();
           console.log(response.data);
@@ -138,9 +144,9 @@ export default {
         });
     },
 
-     deletePT(id) {
-      axios
-        .delete("http://localhost:8081/photos/" + id)
+    deletePT(id) {
+      api()
+        .delete("/photos/" + id)
         .then((response) => {
           this.refreshData();
           console.log("delete", response.data);
@@ -165,7 +171,7 @@ export default {
         .then((response) => {
           let prevMessage = this.message ? this.message + "\n" : "";
           this.message = prevMessage + response.data.message;
-           this.refreshData();
+          this.refreshData();
         })
         .then((files) => {
           this.fileInfos = files.data;
@@ -202,7 +208,7 @@ export default {
 <style lang="scss" scoped>
 input[type="file"] {
   border: 1px dotted #b3adad;
-  height: 32px
+  height: 32px;
 }
 
 .btn-danger {
@@ -248,21 +254,20 @@ ul {
 }
 
 button.btn.btn-success {
-    background-color: DodgerBlue;
-    border: none;
-    color: white;
-    margin-left: 15px;
-    font-size: 16px;
-    cursor: pointer;
-        padding-left: 10px;
-    padding-right: 10px;
-
+  background-color: DodgerBlue;
+  border: none;
+  color: white;
+  margin-left: 15px;
+  font-size: 16px;
+  cursor: pointer;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 .paginate {
   display: flex;
   justify-content: space-around;
 }
 .form-group {
-    display: flex;
+  display: flex;
 }
 </style>

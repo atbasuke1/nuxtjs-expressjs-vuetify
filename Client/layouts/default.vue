@@ -5,9 +5,9 @@
       <!-- <v-btn @click="upload">Upload file</v-btn> -->
       <v-btn @click="photo" :to="'/photo'"> Upload</v-btn>
       <v-spacer></v-spacer>
-       <div v-if="Name">
+       <!-- <div v-if="Name">
         <h4>hello, {{ Name }}</h4>
-      </div>
+      </div> -->
       <v-spacer></v-spacer>
       <v-btn @click="login">Login</v-btn>
       <v-btn @click="register">Sign Up</v-btn>
@@ -22,8 +22,8 @@
   </v-app>
 </template>
 <script>
+import api from '../service/api';
 import store from "../store/store";
-import axios from "axios";
 
 export default {
   name: "DefaultLayout",
@@ -88,7 +88,7 @@ export default {
 
     async photo() {
       console.log("islogin: ", store.state.isUserLoggedIn);
-      await axios.get("http://localhost:8081/photos");
+      await api().get("/photos");
       if (store.state.isUserLoggedIn) {
         this.$router.push("/photo");
       } else {
